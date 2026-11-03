@@ -28,4 +28,18 @@ export default class DB {
         });
         return response.json();
     }
+
+    static async updateOneById(monster) {
+        const response = await fetch(this.apiURL + "monsters/" + monster.id, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: monster.name,
+                type: monster.type,
+                dangerLevel: Number(monster.dangerLevel),
+                year: Number(monster.year),
+            }),
+        });
+        return response.json();
+    }
 }
