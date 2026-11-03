@@ -18,10 +18,12 @@ export default class Monster {
         this.year = data.year;
     }
 
-    render(el) {
-        el.insertAdjacentHTML("beforeend", getTemplate(this));
-        this.domElt = el.lastElementChild;
+    render() {
+        const template = document.createElement("template");
+        template.innerHTML = getTemplate(this);
+        this.domElt = template.content.firstElementChild;
         this.initEvents();
+        return this.domElt;
     }
 
         async update(data) {

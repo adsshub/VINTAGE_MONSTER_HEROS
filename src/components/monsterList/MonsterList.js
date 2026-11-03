@@ -20,7 +20,7 @@ export default class MonsterList {
         this.domElt.innerHTML = getTemplate(this);
         this.listDomElt = this.domElt.querySelector(".monster-list");
         this.monsters.forEach((monster) => 
-            monster.render(this.listDomElt)
+            this.listDomElt.append(monster.render())
         );
         this.initEvents();
     }
@@ -34,7 +34,7 @@ export default class MonsterList {
         this.monsters.push(newMonster);
 
         // Ajouter dans le DOM
-        newMonster.render(this.listDomElt);
+        this.listDomElt.appendChild(newMonster.render());
 
         // mettre à jour le compteur
         this.domElt.querySelector("span.display").textContent = this.monsters.length;
@@ -54,6 +54,21 @@ export default class MonsterList {
 
     }
 
+    search(text) {
+    const query = text.toLowerCase();
+
+    this.monsters.forEach((monster) => {
+        const name = monster.name.toLowerCase();
+        const type = monster.type.toLowerCase();
+
+        if (name.includes(query) || type.includes(query)) {
+            monster.domElt.hidden = false;   // on montre la ligne
+        } else {
+            monster.domElt.hidden = true;    // on cache la ligne
+        }
+    });
+}
+
     initEvents() {
     this.domElt.querySelector("aside button").addEventListener("click", () => {
         const [name, type, dangerLevel, year] = this.domElt.querySelectorAll("aside .field");
@@ -68,5 +83,11 @@ export default class MonsterList {
         dangerLevel.value = "";
         year.value = "";
         });
+
+        this.domElt.querySelector("input[type='search']").addEventListener("input", (e) => {
+            this.search(e.target.value);
+        });
     }
 }
+    
+    
