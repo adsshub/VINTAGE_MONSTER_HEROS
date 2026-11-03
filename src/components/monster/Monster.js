@@ -1,6 +1,14 @@
-import getTemplate from './template.js';
-
+import getTemplate from './template';
 export default class Monster {
+    static TYPES = [
+        "Giant reptile",
+        "Alien",
+        "Mutant",
+        "Giant insect",
+        "Robot",
+        "Deep-sea creature",
+    ];
+    
     constructor(data) {
         this.id = data.id;
         this.name = data.name;
@@ -10,8 +18,6 @@ export default class Monster {
     }
 
     render(el) {
-        const template = document.createElement('div');
-        template.innerHTML = getTemplate(this);
-        el.append(template);
+         el.insertAdjacentHTML("beforeend", getTemplate(this));
     }
 }

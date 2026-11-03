@@ -16,7 +16,7 @@ export default class MonsterList {
     }
 
     render() {
-        this.domElt.innerHTML = getTemplate();
+        this.domElt.innerHTML = getTemplate(this);
         this.monsters.forEach((monster) => {
             monster.render(this.domElt.querySelector(".monster-list"));
         });
