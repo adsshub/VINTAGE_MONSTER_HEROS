@@ -18,6 +18,14 @@ export default class Monster {
     }
 
     render(el) {
-         el.insertAdjacentHTML("beforeend", getTemplate(this));
+        el.insertAdjacentHTML("beforeend", getTemplate(this));
+        this.domElt = el.lastElementChild;
+        this.initEvents();
+    }
+
+    initEvents() {
+        this.domElt.querySelector(".btn-delete").addEventListener("click", () => {
+            window.monsterList.deleteOneById(this.id);
+        });
     }
 }

@@ -38,7 +38,21 @@ export default class MonsterList {
 
         // mettre à jour le compteur
         this.domElt.querySelector("span.display").textContent = this.monsters.length;
-}
+    }
+
+    async deleteOneById(id) {
+        // Supprimer de la db
+        const response = await DB.deleteOneById(id);
+
+        // Supprimer des monsters
+        this.monsters.splice(this.monsters.findIndex(monster => monster.id == id), 1);
+
+        // Supprimer du DOM
+        this.domElt.querySelector(`[data-id='${id}']`).remove();
+        // Mettre à jour le compteur
+        this.domElt.querySelector("span.display").textContent = this.monsters.length;
+
+    }
 
     initEvents() {
     this.domElt.querySelector("aside button").addEventListener("click", () => {
@@ -53,6 +67,6 @@ export default class MonsterList {
         type.selectedIndex = 0;
         dangerLevel.value = "";
         year.value = "";
-    });
-}
+        });
+    }
 }
