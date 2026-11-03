@@ -5,6 +5,7 @@ import getTemplate from "./template";
 export default class MonsterList {
     constructor(data) {
         this.domElt = document.querySelector(data.el);
+        this.listDomElt = null;
         DB.setApiURL(data.apiURL);
         this.monsters = [];
         this.loadMonsters();
@@ -17,8 +18,41 @@ export default class MonsterList {
 
     render() {
         this.domElt.innerHTML = getTemplate(this);
-        this.monsters.forEach((monster) => {
-            monster.render(this.domElt.querySelector(".monster-list"));
-        });
+        this.listDomElt = this.domElt.querySelector(".monster-list");
+        this.monsters.forEach((monster) => 
+            monster.render(this.listDomElt)
+        );
+        this.initEvents();
     }
+
+    async addMonster(data) {
+            // ajouter dans la db
+        const created = await DB.create(data);
+
+        // ajouter à this.monsters
+        const newMonster = new Monster(created);
+        this.monsters.push(newMonster);
+
+        // Ajouter dans le DOM
+        newMonster.render(this.listDomElt);
+
+        // mettre à jour le compteur
+        this.domElt.querySelector("span.display").textContent = this.monsters.length;
+}
+
+    initEvents() {
+    this.domElt.querySelector("aside button").addEventListener("click", () => {
+        const [name, type, dangerLevel, year] = this.domElt.querySelectorAll("aside .field");
+        this.addMonster({
+            name: name.value,
+            type: type.value,
+            dangerLevel: dangerLevel.value,
+            year: year.value,
+        });
+        name.value = "";
+        type.selectedIndex = 0;
+        dangerLevel.value = "";
+        year.value = "";
+    });
+}
 }
